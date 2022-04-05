@@ -6,6 +6,7 @@ const methodOverride = require('method-override');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 const bodyParser = require('body-parser');
 const models = require('./db/models');
+require('./controllers/events')(app, models);
 
 // use "main" as our default layout
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main', handlebars: allowInsecurePrototypeAccess(Handlebars) }));
@@ -23,7 +24,7 @@ module.exports = {
   "migrations-path": path.resolve('./db/migrations')
 };
 
-// render events homepage
+// Index
 app.get('/', (req, res) => {
   models.Event.findAll({ order: [['createdAt', 'DESC']] }).then(events => {
     res.render('events-index', { events: events });
@@ -79,6 +80,7 @@ app.put('/events/:id', (req, res) => {
 
 // delete event
 app.delete('/events/:id', (req, res) => {
+  event_id = req.params.id;
   models.Event.findByPk(req.params.id).then(event => {
     event.destroy();
     res.redirect(`/`);
