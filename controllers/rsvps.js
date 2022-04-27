@@ -1,15 +1,16 @@
 module.exports = (app, models) => {
   // new
   app.get('/events/:eventId/rsvps/new', (req, res) => {
-    models.Event.findByPk(req.params.EventId).then(event => {
+    models.Event.findByPk(req.params.eventId).then(event => {
       res.render('rsvps-new', { event: event });
     });
   });
 
   // create
-  app.post('/rsvp', (req, res) => {
-    models.Rsvp.create(req.body.EventId).then(rsvp => {
-      res.redirect(`/events/${event_id}`);
+  app.post('/events/:eventId/rsvps', (req, res) => {
+    req.body.EventId = req.params.eventId
+    models.Rsvp.create(req.body).then(rsvp => {
+      res.redirect(`/events/${req.params.eventId}`);
     }).catch((err) => {
       console.log(err);
     });
