@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": null,
-    "password": null,
+    "username": "postgres",
+    "password": "postgres",
     "database": "make-parties",
-    "host": "127.0.0.1",
+    "host": "db",
     "dialect": "postgres"
   },
   "test": {
